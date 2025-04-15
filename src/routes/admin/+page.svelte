@@ -13,6 +13,8 @@
         Users2,
         Box
     } from '@lucide/svelte';
+    import { onMount } from 'svelte';
+    import { browser } from '$app/environment';
 
     export let data: any;
 
@@ -54,6 +56,53 @@
     // Recent orders from the data prop
     let recentOrders = data.recentOrders || [];
     let lowStockProducts = data.lowStockProducts || [];
+
+    // Revenue Chart Options
+    let revenueChartOptions = {
+        chart: {
+            type: "line",
+            height: 350,
+            toolbar: {
+                show: false
+            }
+        },
+        stroke: {
+            curve: 'smooth',
+            width: 3
+        },
+        series: [{
+            name: "Revenue",
+            data: [30500, 42000, 35800, 49000, 44000, 45200]
+        }],
+        xaxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+        },
+        colors: ['#6366f1']
+    };
+
+    // Category Chart Options
+    let categoryChartOptions = {
+        chart: {
+            type: "donut",
+            height: 350
+        },
+        series: [4500, 3800, 2900, 1800],
+        labels: ['Electronics', 'Clothing', 'Accessories', 'Books'],
+        colors: ['#6366f1', '#8b5cf6', '#d946ef', '#ec4899'],
+        legend: {
+            position: 'bottom'
+        }
+    };
+
+    let ApexCharts;
+    let chart: any;
+    let mounted = false;
+    
+    onMount(async () => {
+        const ApexChartsModule = await import('svelte-apexcharts');
+        chart = ApexChartsModule.chart;
+        mounted = true;
+    });
 </script>
 
 <AdminLayout>
@@ -95,8 +144,39 @@
             {/each}
         </div>
 
-        <!-- Recent Activity -->
+        <!-- Charts Section -->
         <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <!-- Revenue Trend Chart -->
+            <div class="overflow-hidden rounded-lg bg-white shadow">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-medium text-gray-900">Revenue Trend</h2>
+                    </div>
+                    <div class="mt-6">
+                        {#if mounted && chart}
+                            <div use:chart={revenueChartOptions} />
+                        {/if}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Distribution Chart -->
+            <div class="overflow-hidden rounded-lg bg-white shadow">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-medium text-gray-900">Sales by Category</h2>
+                    </div>
+                    <div class="mt-6">
+                        {#if mounted && chart}
+                            <div use:chart={categoryChartOptions} />
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2 pb-6">
             <!-- Recent Orders -->
             <div class="overflow-hidden rounded-lg bg-white shadow">
                 <div class="p-6">
@@ -130,7 +210,7 @@
             </div>
 
             <!-- Low Stock Products -->
-            <div class="overflow-hidden rounded-lg bg-white shadow">
+            <div class="overflow-hidden rounded-lg bg-white shadow pb-2">
                 <div class="p-6">
                     <div class="flex items-center justify-between">
                         <h2 class="text-lg font-medium text-gray-900">Low Stock Products</h2>
