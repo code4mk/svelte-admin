@@ -15,7 +15,7 @@
     const profileMenu = createMenu({ label: 'Profile' });
 
     const menuItems = [
-        { text: 'Your profile', action: () => goto('/profile') },
+        { text: 'Your profile', action: () => goto('/admin/profile') },
         { text: 'Sign out', action: () => goto('/logout') }
     ];
 
@@ -30,7 +30,7 @@
     <div class="flex justify-between items-center h-16">
         <div class="flex items-center pl-4">
             <button 
-                class="p-2 mr-2 text-gray-400 hover:text-gray-500"
+                class="p-2 mr-2 text-gray-400 hover:text-gray-500 cursor-pointer"
                 on:click={() => $sidebarOpen = !$sidebarOpen}
             >
                 {#if $sidebarOpen}

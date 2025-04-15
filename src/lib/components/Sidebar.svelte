@@ -33,7 +33,7 @@
             {#each menuItems as item}
                 <a
                     href={item.href}
-                    class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {$page.url.pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
+                    class="group flex items-center px-2 py-2 text-sm font-medium rounded-md mt-1 {$page.url.pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
                 >
                     <svelte:component 
                         this={item.icon}
